@@ -1,0 +1,24 @@
+<?php
+
+class Test_Controller
+{
+	public $baseName = 'test';  //meghatározni, hogy melyik oldalon vagyunk
+	public function main(array $vars) // a router által továbbított paramétereket kapja
+	{
+		$testModel = new Test_Model;  //az osztályhoz tartozó modell
+		if(isset($vars['data']))
+		{
+			//modellbõl lekérdezzük a kért adatot
+			$reqData = $testModel->get_data($vars['data']); 
+			//betöltjük a nézetet
+			$view = new View_Loader($this->baseName.'_main');
+			//átadjuk a lekérdezett adatokat a nézetnek
+			$view->assign('title', $reqData['title']);
+			$view->assign('content', $reqData['content']);
+		}
+		else
+		{ echo "No data to show"; }
+	}
+}
+
+?>

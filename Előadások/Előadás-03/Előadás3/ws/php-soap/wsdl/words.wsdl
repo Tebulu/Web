@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="http://localhost/ws/php-soap/wsdl/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://localhost/ws/php-soap/wsdl/"
+	xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+
+    <types>
+        <xsd:schema targetNamespace="http://localhost/ws/php-soap/wsdl/">
+            <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+            <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/"/>
+            <xsd:complexType name="szopar">
+                <xsd:all>
+                <xsd:element name="eredeti" type="xsd:string"/>
+                <xsd:element name="forditott" type="xsd:string"/>
+                </xsd:all>
+            </xsd:complexType>
+            <xsd:complexType name="stringek">
+                <xsd:complexContent>
+                    <xsd:restriction base="SOAP-ENC:Array">
+                        <xsd:attribute wsdl:arrayType="xsd:string[]" ref="SOAP-ENC:arrayType"/>
+                    </xsd:restriction>
+                </xsd:complexContent>
+            </xsd:complexType>
+        </xsd:schema>
+    </types>
+
+    <message name="hosszRequest">
+        <part name="szo" type="xsd:string"/>
+    </message>
+    <message name="hosszResponse">
+        <part name="eredmeny" type="xsd:int"/>
+    </message>
+    <message name="forditottRequest">
+        <part name="szo" type="xsd:string"/>
+    </message>
+    <message name="forditottResponse">
+        <part name="eredmeny" type="tns:szopar"/>
+    </message>
+    <message name="reszszavakRequest">
+        <part name="szo" type="xsd:string"/>
+    </message>
+    <message name="reszszavakResponse">
+        <part name="eredmeny" type="tns:stringek"/>
+    </message>
+
+    <portType name="WordOperationsPortType">
+        <operation name="hossz">
+            <input message="tns:hosszRequest"/>
+            <output message="tns:hosszResponse"/>
+        </operation>
+        <operation name="forditott">
+            <input message="tns:forditottRequest"/>
+            <output message="tns:forditottResponse"/>
+        </operation>
+        <operation name="reszszavak">
+            <input message="tns:reszszavakRequest"/>
+            <output message="tns:reszszavakResponse"/>
+        </operation>
+    </portType>
+    
+    <binding name="WordOperationsBinding" type="tns:WordOperationsPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc"/>
+        <operation name="hossz">
+            <soap:operation style="rpc" soapAction="http://localhost/ws/php-soap/wsdl/soap-server.php/hossz"/>
+            <input>
+                <soap:body namespace="http://localhost/ws/php-soap/wsdl/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="encoded"/>
+            </input>
+            <output>
+                <soap:body namespace="http://localhost/ws/php-soap/wsdl/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="encoded"/>
+            </output>
+        </operation>
+        <operation name="forditott">
+            <soap:operation style="rpc" soapAction="http://localhost/ws/php-soap/wsdl/soap-server.php/forditott"/>
+            <input>
+                <soap:body namespace="http://localhost/ws/php-soap/wsdl/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="encoded"/>
+            </input>
+            <output>
+                <soap:body namespace="http://localhost/ws/php-soap/wsdl/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="encoded"/>
+            </output>
+        </operation>
+        <operation name="reszszavak">
+            <soap:operation style="rpc" soapAction="http://localhost/ws/php-soap/wsdl/soap-server.php/reszszavak"/>
+            <input>
+                <soap:body namespace="http://localhost/ws/php-soap/wsdl/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="encoded"/>
+            </input>
+            <output>
+                <soap:body namespace="http://localhost/ws/php-soap/wsdl/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="encoded"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="WordOperations">
+        <port name="WordOperationsPort" binding="tns:WordOperationsBinding">
+            <soap:address location="http://localhost/ws/php-soap/wsdl/soap-server.php"/>
+        </port>
+    </service>
+
+</definitions>
+
